@@ -1,0 +1,59 @@
+body {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #333;
+	background-color: #fff;
+}
+a {
+	color: #aeabb7;
+	text-decoration: none
+}
+#menu-bar  {
+	background-color: #000000;
+	border: solid 2px #165775;
+}
+#login-base.container-fluid {
+	position: relative;
+	text-align: center;
+	background-color: #fff;
+	padding-bottom: 15px; 
+}
+.nav>li>a:focus, .nav>li>a:hover {
+	text-decoration: none;
+	background-color: #165775;
+	color: #fafafa;
+}
+.navbar-nav>li>a {
+	padding-top: 15px;
+	padding-bottom: 15px;
+	color: #165775;
+}
+#vine .vine-image {
+	display: inline-block;
+}
+#vine .vine-image:hover .vine-desc {
+	background: rgba(0,0,0,.5);
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+#vine .vine-image:hover .vine-desc h4 {
+	text-align: center;
+}
+#manualFormButton {
+	float: right;
+	display: inline-block;
+	margin-bottom: 15px;
+}
+#manualPara {
+	float: left;
+}
+#updateDB {
+	float: right;
+}

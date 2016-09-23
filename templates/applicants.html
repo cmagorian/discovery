@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+	<h2>Creator's Project Applicants</h2>
+	<p>Applicants who have signed up via the Creator's Project section of alldefdigital.com</p>
+	<div class="table-responsive">
+		<table id="applicants" class="table table-hover" data-toggle="table" data-click-to-select="true">
+			<thead>
+				<tr>
+					<th data-field="marked">Marked</th>
+					<th data-field="UserId">UserId</th>
+					<th data-field="Email">Email</th>
+					<th data-field="Name">Name</th>
+					<th data-field="Birthday">Birthday</th>
+					<th data-field="City">City</th>
+					<th data-field="YouTube Link">YouTube Link</th>
+					<th data-field="Facebook Link">Facebook Link</th>
+					<th data-field="Twitter Link">Twitter Link</th>
+					<th data-field="Instagram Link">Instagram Link</th>
+					<th data-field="Content">Content</th>
+					<th data-field="Goals">Goals</th>
+					<th data-field="Licensing">Licensing</th>
+					<th data-field="Read" data-checkbox="true">Mark as Read?</td>
+				</tr>
+			</thead>
+			<tbody>
+			{% for data in data %}
+				<tr id="row-high">
+					<td data-index="{{ loop.index }}">{{ data.read }}</td>
+					<td data-index="{{ loop.index }}">{{ data.userId }}</td>
+					<td data-index="{{ loop.index }}">{{ data.email }}</td>
+					<td data-index="{{ loop.index }}">{{ data.fullname }}</td>
+					<td data-index="{{ loop.index }}">{{ data.birthday }}</td>
+					<td data-index="{{ loop.index }}">{{ data.city }}</td>
+					<td data-index="{{ loop.index }}">{{ data.youtube }}</td>
+					<td data-index="{{ loop.index }}">{{ data.facebook }}</td>
+					<td data-index="{{ loop.index }}">{{ data.twitter }}</td>
+					<td data-index="{{ loop.index }}">{{ data.instagram }}</td>
+					<td data-index="{{ loop.index }}">{{ data.content }}</td>
+					<td data-index="{{ loop.index }}">{{ data.goals }}</td>
+					<td data-index="{{ loop.index }}">{{ data.license }}</td>
+					<td><input data-index="{{ loop.index }}" type="checkbox"></td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<button id="updateDB" class="btn btn-primary">Update</button>
+</div>
+<div class="container-fluid">
+	{{ records }}
+</div>
+<hr>
+<div class="container">
+	<h4>Manual Entry | Creator's Project Database</h4>
+	<p id="manualPara">Manually enter users below to be added to the Creator's Project database.</p>
+	<button class="btn btn-primary" id="manualFormButton">Form Show/Hide</button>
+	<form class="form-group" id="dbEntry" method="POST" role="form" data-toggle="validator">
+		<input id="Email" class="form-control" placeholder="Email" name="email" type="text" required/>
+		<input id="Name" class="form-control" placeholder="Fullname" name="name" type="text" required/>
+		<input id="Birthday" class="form-control" placeholder="Birthday" name="birthday" type="text" required/>
+		<input id="City" class="form-control" placeholder="City" name="city" type="text" required/>
+		<input id="YouTube" class="form-control" placeholder="YouTube Link" name="youtube" type="text" required/>
+		<input id="Facebook" class="form-control" placeholder="Facebook Link" name="facebook" type="text" required/>
+		<input id="Twitter" class="form-control" placeholder="Twitter Link" name="twitter" type="text" required/>
+		<input id="Instagram" class="form-control" placeholder="Instagram Link" name="instagram" type="text" required/>
+		<input id="Content" class="form-control" placeholder="Content..." name="content" type="text" required/>
+		<input id="Goals" class="form-control" placeholder="Goals..." name="goal" type="text" required/>
+		<input id="License" class="form-control" placeholder="License..." name="license" type="text" required/>
+		<input id="submit" class="btn btn-primary" value="Submit" type="button"/>
+	</form>
+	<br>
+	<p id="success_para"></p>
+</div>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$('#read_0').change(function() {
+			alert('Handler for .change() called');
+		});
+	});
+	jQuery(document).ready(function($) {
+		$('#dbEntry').hide();
+		$('#manualFormButton').click(function() {
+			$('#dbEntry').fadeToggle();
+			$('html, body').animate({
+				scrollTop: $('#submit').offset().top
+			}, 500);
+		});
+	});
+	jQuery(document).ready(function($) {
+		$('#submit').click(function() {
+			var email = $('#Email').val();
+			var name = $('#Name').val();
+			var birthday = $('#Birthday').val();
+			var city = $('#City').val();
+			var youtube = $('#YouTube').val();
+			var facebook = $('#Facebook').val();
+			var twitter = $('#Twitter').val();
+			var instagram = $('#Instagram').val();
+			var content = $('#Content').val();
+			var goals = $('#Goals').val();
+			var license = $('#License').val();
+			$.ajax({
+				url: '/CreateUser',
+				data: { 'Email':email, 'Fullname':name, 'Birthday':birthday, 'City':city, 'YouTubeURI':youtube, 'FacebookURI':facebook, 'TwitterURI':twitter, 'InstagramURI':instagram, 'Content':content, 'Goals':goals, 'Licensing':license },
+				type: 'POST',
+				success: function(response) {
+					$('#success_para').text('Thanks for adding to the database, Fam!');
+				},
+				error: function(error) {
+					$('success_para').text('Whoops! Looks like something went wrong...');
+				}
+			});
+		});
+	});
+	jQuery(document).ready(function($) {
+		$('#applicants tr').each(function(index) {
+			var cell = $(this).children("td").eq(0)
+			if (cell == 1) {
+				$(this).css('background-color', '#000');
+			}
+		});
+	});
+	var $table = $('#applicants'), $button = $('#updateDB');
+	jQuery(function($) {
+		$button.click(function() {
+			data = $table.bootstrapTable('getSelections');
+			console.log(data);
+			for (var key in data) {
+				var userid = { 'UserId': data[key]['UserId'] };
+				console.log(userid);
+				$.ajax({
+					url: '/UpdateDB',
+					type: 'POST',
+					data: userid
+				});
+			}
+		});
+	});
+
+	var checkedRows = [];
+	jQuery('#applicants').on('check.bs.table', function (e, row) {
+		checkedRows.push({id: row.UserId});
+		console.log(checkedRows);
+	});
+	
+	jQuery('#applicants').on('uncheck.bs.table', function(e, row) {
+		jQuery.each(checkedRows, function(index, value) {
+			if (value.id == row.id) {
+				checkedRows.splice(index,1);
+			}
+		});
+		console.log(checkedRows);
+	});
+</script>
+{% endblock %}

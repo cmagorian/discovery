@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>All Def Digital | {{ page }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <script type="text/javascript" src="/static/js/jquery-3.1.0.js"></script>
+    <script type="text/javascript" src="/static/js/tether.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-table.js"></script>
+  </head>
+  <body>
+  <nav class="navbar navbar-dark bg-inverse" role="navigation">
+  <div id="menu-bar" class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">ADD</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="{{ url_for('applicants') }}">Creator's Dashboard</a></li>
+        <li class="active"><a href="{{ url_for('discovery') }}">Discovery</a></li>
+      </ul>
+      <form class="navbar-form navbar-left" role="search" action="/search" method="post">
+        <div class="form-group">
+          <input type="text" class="form-control" name=search value="{{ request.form.search }}" placeholder="Search">
+        </div>
+        <input type="submit" class="btn btn-default">Search</input>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal" style="margin-top: 10px;">Info</button></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="{{ url_for('usage') }}">Guide</a></li>
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="#">All Def</a></li>
+            <li class="divider"></li>
+            <li><a data-toggle="modal" data-target="#myModal">Usage</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+  </ul>
+    <div class="container">
+
+      <!-- child template -->
+      {% block content %}{% endblock %}
+
+      <!-- errors -->
+      {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}</p>
+      {% endif %}
+
+      <!-- messages -->
+      {% for message in get_flashed_messages() %}
+        {{ message }}
+      {% endfor %}
+    </div>
+    <!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+	        <h4 class="modal-title" id="myModalLabel">All Def Digital Backend Usage</h4>
+	      </div>
+	      <div class="modal-body">
+	        This is All Def Digital's backend application that gives our employees and influencers the ability to see their internal metrics. <hr> <h3>Applicants Dashboard</h3> The applicants through the All Def Digital 'Join the Squad' page. This is where you can easily see the database of users that have applied to collaborate with us.<hr> <h3>Discovery App</h3> Coming soon...The ability to search the masses of the internet to find our next influencers ;) <hr> Email Chris at chrism@alldefdigital.com with questions.
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <a href="{{ url_for('home') }}" class="btn btn-primary" role="button">Home</a>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+  </body>
+</html>
+<script type="text/javascript" src="/static/js/jquery-3.1.0.js"></script>
+<script type="text/javascript" src="/static/js/tether.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap.js"></script>
+<script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script type="text/javascript">
+	$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$('.dropdown-toggle').dropdown();
+});
+</script>
+

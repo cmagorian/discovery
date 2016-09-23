@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+	<h1>Facebook Videos</h1>
+	<p>This is where the Facebook Video Discovery can be searched for new videos...</p>
+	{% for i in ids %}
+		<iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2F{{ search_term }}%2Fvideos%{{ i }}%2F&show_text=0&width=560" width="560" height="315" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>
+	{% endfor %}
+</div>
+
+{% endblock %}

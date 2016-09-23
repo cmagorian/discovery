@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+	<h2>Creator's Project Applicants</h2>
+	<p>Applicants who have signed up via the Creator's Project section of alldefdigital.com</p>
+	<div class="table-responsive">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Email</th>
+					<th>Name</th>
+					<th>Birthday</th>
+					<th>City</th>
+					<th>YouTube Link</th>
+					<th>Facebook Link</th>
+					<th>Twitter Link</th>
+					<th>Instagram Link</th>
+					<th>Content</th>
+					<th>Goals</th>
+					<th>Licensing</th>
+					<th>Mark as Read?</td>
+				</tr>
+			</thead>
+			<tbody>
+			{% for data in data %}
+				<tr>
+					<td id="userId(( loop.index }}"
+					<td id="email_{{ loop.index }}">{{ data.email }}</td>
+					<td id="fullname_{{ loop.index }}">{{ data.fullname }}</td>
+					<td id="birthday_{{ loop.index }}">{{ data.birthday }}</td>
+					<td id="city_{{ loop.index }}">{{ data.city }}</td>
+					<td id="youtube_{{ loop.index }}">{{ data.youtube }}</td>
+					<td id="facebook_{{ loop.index }}">{{ data.facebook }}</td>
+					<td id="twitter_{{ loop.index }}">{{ data.twitter }}</td>
+					<td id="instagram_{{ loop.index }}">{{ data.instagram }}</td>
+					<td id="content_{{ loop.index }}">{{ data.content }}</td>
+					<td id="goals_{{ loop.index }}">{{ data.goals }}</td>
+					<td id="license_{{ loop.index }}">{{ data.license }}</td>
+					<td><input id="read_{{ loop.index }}" type="checkbox"></td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<button id="updateDB" class="btn btn-primary">Update</button>
+</div>
+<hr>
+<div class="container">
+	<h4>Manual Entry | Creator's Project Database</h4>
+	<p id="manualPara">Manually enter users below to be added to the Creator's Project database.</p>
+	<button class="btn btn-primary" id="manualFormButton">Form Show/Hide</button>
+	<form class="form-group" id="dbEntry" method="POST" role="form" data-toggle="validator">
+		<input id="Email" class="form-control" placeholder="Email" name="email" type="text" required/>
+		<input id="Name" class="form-control" placeholder="Fullname" name="name" type="text" required/>
+		<input id="Birthday" class="form-control" placeholder="Birthday" name="birthday" type="text" required/>
+		<input id="City" class="form-control" placeholder="City" name="city" type="text" required/>
+		<input id="YouTube" class="form-control" placeholder="YouTube Link" name="youtube" type="text" required/>
+		<input id="Facebook" class="form-control" placeholder="Facebook Link" name="facebook" type="text" required/>
+		<input id="Twitter" class="form-control" placeholder="Twitter Link" name="twitter" type="text" required/>
+		<input id="Instagram" class="form-control" placeholder="Instagram Link" name="instagram" type="text" required/>
+		<input id="Content" class="form-control" placeholder="Content..." name="content" type="text" required/>
+		<input id="Goals" class="form-control" placeholder="Goals..." name="goal" type="text" required/>
+		<input id="License" class="form-control" placeholder="License..." name="license" type="text" required/>
+		<input id="submit" class="btn btn-primary" value="Submit" type="button"/>
+	</form>
+	<br>
+	<p id="success_para"></p>
+</div>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$('#read_0').change(function() {
+			alert('Handler for .change() called');
+		});
+	});
+	jQuery(document).ready(function($) {
+		$('#dbEntry').hide();
+		$('#manualFormButton').click(function() {
+			$('#dbEntry').fadeToggle();
+			$('html, body').animate({
+				scrollTop: $('#submit').offset().top
+			}, 500);
+		});
+	});
+	jQuery(document).ready(function($) {
+		$('#submit').click(function() {
+			var email = $('#Email').val();
+			var name = $('#Name').val();
+			var birthday = $('#Birthday').val();
+			var city = $('#City').val();
+			var youtube = $('#YouTube').val();
+			var facebook = $('#Facebook').val();
+			var twitter = $('#Twitter').val();
+			var instagram = $('#Twitter').val();
+			var content = $('#Content').val();
+			var goals = $('#Goals').val();
+			var license = $('#License').val();
+			$.ajax({
+				url: '/CreateUser',
+				data: { 'Email':email, 'Fullname':name, 'Birthday':birthday, 'City':city, 'YouTubeURI':youtube, 'FacebookURI':facebook, 'TwitterURI':twitter, 'InstagramURI':instagram, 'Content':content, 'Goals':goals, 'Licensing':license },
+				type: 'POST',
+				success: function(response) {
+					$('#success_para').text('Thanks for adding to the database, Fam!');
+				},
+				error: function(error) {
+					$('success_para').text('Whoops! Looks like something went wrong...');
+				}
+			});
+		});
+	});
+</script>
+{% endblock %}

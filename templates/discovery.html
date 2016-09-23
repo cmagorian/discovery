@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+	<h1>All Def Digital</h1>
+	<p>Dashboard for discovering new talent programmatically</p>
+	<div class="container-fluid">
+	<ul class="nav nav-tabs">
+		<li class="nav active"><a data-toggle="tab" href='#twitter'>Twitter</a></li>
+		<li class="nav"><a data-toggle="tab" href="#vine">Vine</a></li>
+		<li class="nav"><a data-toggle="tab" href="#facebook">Facebook</a></li>
+		<li class="nav"><a data-toggle="tab" href="#instagram">Instagram</a></li>
+	</ul>
+	<div class="tab-content">
+		<div id="twitter" class="tab-pane fade in active">
+			<h3>Twitter</h3>
+			<p>Search Twitter Stream for users. The results will pull images and videos from the stream.</p>
+			<form id="screenName" action='/discovery' class='form-horizontal center aligned'>
+                                <div class="form-group row">
+                                        <input type="text" class="form-control" style="width: 50%;" name="sn_name" value={{ sn_name }}>
+                                        <input type="submit" class="btn btn-primary inline" value="Submit">
+                                </div>
+                        </form>
+			{% for i in videos %}
+				<img src={{ i }} style="width:15%; height:15%;" />
+			{% endfor %}
+		</div>
+		<div id="vine" class="tab-pane fade">
+			<h3>Vine</h3>
+			<p>Below are the trending Vine videos available at the time of this dashboard loading. If you refresh the page, and re-navigate to this tab, you will see updated trend data. Click on each video to be lead to the individual video url (i.e you can use that link to rip it).</p>
+			{% for vine in vine %}
+				<div class="vine-image">
+					<video width="320" height="320" controls>
+						<source src="{{ vine[0] }}" type="video/mp4">
+						<h4 class="vine-desc">Count: {{ vine[1] }}</h4>
+						<h4 class="vine-desc-2">Velocity: {{ vine[2] }}</h4>
+					</video>
+				</div>
+			{% endfor %}
+		</div>
+		<div id="facebook" class="tab-pane fade">
+			<h3>Facebook</h3>
+			<p>This is where Facebook stuff will show</p>
+		</div>
+		<div id="instagram" class="tab-pane fade">
+			<h3>Instagram</h3>
+			<p>This is where Instagram stuff will show</p>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$('#screenName').bind('submit', function() {
+			$.getJSON($SCRIPT_ROOT + '/discovery', {
+				sn_name: $("input[name='sn_name']").val()
+			}, function(data) {
+				console.log(data.result);
+			});
+			return false;
+		});
+	});
+	jQuery(document).ready(function($) {
+		$('.nav-tabs').tab();
+	});
+</script>
+{% endblock %}
